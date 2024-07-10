@@ -46,6 +46,46 @@ inside include :
 
 15. implement the healthy route 
 
-------------- CONNECT DB -------------
+------------- CONNECT TO DB -------------
+(in our case MongoDB)
 
-16. 
+16. Run docker MongoDB container (if not installed: 
+```docker run -d -p 27017:27017 --name mongo -v mongo_data:/data/db -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=root mongo:latest ```
+)
+
+17. ```npm i mongoose ```
+
+18. In folder SRC create new folder Database and inside file db.js
+
+19. Create in .env and .env.example a variable called 'MONGO_URI'
+
+20. In this file type:
+
+``` 
+import mongoose from 'mongoose';
+import 'dotenv/config';
+
+
+export const dbConnection = () => {
+    console.log('Start connection');
+    return mongoose.connect( MONGO_URI, {})
+}
+
+```
+
+21. Import the function dbConnection to server.js as follows:
+
+```
+dbConnection()
+    .then(() => {
+        console.log('Database connection established!');
+        app.listen(PORT, () => {
+            console.log(`Server running on ${PORT}`);
+        });
+    })
+    .catch(error => {
+        console.error('Error establishing connection with the database:', error);
+    });
+```
+
+22. Establish connection between the server and the DB with npm run dev 
