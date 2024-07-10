@@ -44,4 +44,8 @@ inside include :
 
 14. create .env.example > add PORT Inside
 
-15. 
+15. implement the healthy route 
+
+------------- CONNECT DB -------------
+
+16. 
