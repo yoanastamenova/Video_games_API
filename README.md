@@ -8,7 +8,7 @@
 
 3. CREATE .gitignore     inside include  /node_modules
 
-4. ``` npm i express ```
+4. ``` npm i express ```   (install express JS package)
 
 5. create folder SRC - inside this folder CREATE server.js
 inside include :
@@ -27,58 +27,56 @@ inside include :
     })
 ```
 
-6. ``` npm i nodemon ``` 
+6. ``` npm i nodemon ```  (installs nodemon package and we dont need deps!)
 
-7. add scripts into package.json
+7. add scripts into package.json  (to run the server in development)
 
 ``` "start": "node ./src/server.js" ```
 ``` "dev": "nodemon ./src/server.js" ```
-
-8. now can use npm run dev to run server
-
-9. add in package json -
 ``` "type":"module", under "main" ```
 
-10. ``` npm i dotenv ```
+8. ``` npm i dotenv ``` (installing dot env package to use it for env files)
 
-11. ``` import 'dotenv/config' ``` en server.js
+9. ``` import 'dotenv/config' ``` en server.js     
 
-12. create .env 
+10. create .env file
 
-13. inside .env - create PORT const and include it in place of 4000
+11. inside .env - create PORT const and include it in place of 4000
 
-14. create .env.example > add PORT Inside
+12. create .env.example > add PORT Inside
 
-15. implement the healthy route 
+13. implement the healthy route as in server.js
 
-## ESTABLISH CONNECTION WITH A DATABASE
+14. server is ready to use with ``` npm run dev ```
+
+
+## CREATE CONNECTION WITH A DATABASE
 (in our case MongoDB)
 
-16. Run docker MongoDB container (if not installed: 
+15. Run docker MongoDB container (if not installed use this command: 
 ```docker run -d -p 27017:27017 --name mongo -v mongo_data:/data/db -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=root mongo:latest ```
 )
 
-17. ```npm i mongoose ```
+16. ```npm i mongoose ``` (installs mongo package)
 
-18. In folder SRC create new folder Database and inside file db.js
+17. In folder SRC create new folder named Database and inside file db.js
 
-19. Create in .env and .env.example a variable called 'MONGO_URI'
+18. Create in .env and .env.example a variable called 'MONGO_URI' which will hold the route we used in creating our container
+ex. MONGO_URI=mongodb://root:root@2017:27017/test?authSource=admin
 
-20. In this file type:
+19. In this db.js file type:
 
 ``` 
 import mongoose from 'mongoose';
-import 'dotenv/config';
-
+import 'dotenv/config'
 
 export const dbConnection = () => {
     console.log('Start connection');
-    return mongoose.connect( MONGO_URI, {})
+    return mongoose.connect( process.env.MONGO_URI, {})
 }
-
 ```
 
-21. Import the function dbConnection to server.js as follows:
+20. Import the function dbConnection to server.js as follows:
 
 ```
 dbConnection()
@@ -93,28 +91,29 @@ dbConnection()
     });
 ```
 
-22. Establish connection between the server and the DB with npm run dev 
+21. Establish connection between the server and the DB with npm run dev 
 
-23. New connection -> URI and paste our URI
+22. GO to Compass -> New connection -> URI and paste our URI
 
 ## CREATE ENTITITES:
 
-24. In folder Database create new folder -> Entities
+23. In folder Database create new folder -> Entities
+ex. entities
 
-25. Inside Entities create another folder named after each of the entities in our DB
+24. Inside Entities create another folder named after each of the entities in our DB
 
 ex. games
 
-26. Inside each entitiy folder create entitiyName.model.js
+25. Inside each entitiy folder create entitiyName.model.js
 
-ex.game.model.js
+ex.   game.model.js
 
-27. In the file include all the columns needed->
+26. In the file include all the columns needed->
 
 ```
 import { Schema, model } from "mongoose";
 
-const GameSchema = new Schema(
+const NameSchema = new Schema(
     {
         title: { 
             type: String, 
@@ -124,15 +123,15 @@ const GameSchema = new Schema(
             type:  String
         },
     },
-    {
-        timestamps: true,
+    { 
+        timestamps: true,    //makes created_at and update_at automatically
         versionKey: false
     }
 )
 
-const Game = model('Game', GameSchema)
+const Game = model('Game', GameSchema)     //we save the model here
 
-export default Game;
+export default Game;                     //exporting it for external use
 ```
 
 28. go back to server.js and start creating CRUD routes
@@ -140,8 +139,12 @@ ex. app.post('/games', createGame)
 
 ## CREATING CRUD FUNCTIONS INSIDE CONTROLLERS
 
-29. Inside our controller create the function we want
-an example:
+29. import the model we created for this entitiy
+ex. import Game from "./game.model.js"
+
+30. Inside our controller create the function we want
+
+an example for Create function in Game:
 
 ```
 export const createGame = (req, res) => {
@@ -178,3 +181,5 @@ export const createGame = (req, res) => {
     }
 }
 ```
+
+31. Go back to server.js and add it to the route
