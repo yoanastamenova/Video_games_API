@@ -1,5 +1,9 @@
 # STEPS TO FOLLOW WHEN WORKING WITH MONGO ENVIRONMENT
 
+<div align="center">
+<img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white">
+</div>
+
 ## CREATE SERVER
 
 1. ``` git init ``` (creates our git repo)
