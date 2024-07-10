@@ -1,3 +1,7 @@
+# STEPS TO FOLLOW WHEN WORKING WITH MONGO ENVIRONMENT
+
+## CREATE SERVER
+
 1. ``` git init ``` (creates our git repo)
 
 2.  ``` npm init ``` (creates node_modules)
@@ -13,7 +17,8 @@ inside include :
     import express from 'express';
     import 'dotenv/config'
 
-    const app = express()              
+    const app = express()
+    app.use(express.json())              
 
     const PORT = process.env.PORT || 5001
 
@@ -46,7 +51,7 @@ inside include :
 
 15. implement the healthy route 
 
-------------- CONNECT TO DB -------------
+## ESTABLISH CONNECTION WITH A DATABASE
 (in our case MongoDB)
 
 16. Run docker MongoDB container (if not installed: 
@@ -89,3 +94,87 @@ dbConnection()
 ```
 
 22. Establish connection between the server and the DB with npm run dev 
+
+23. New connection -> URI and paste our URI
+
+## CREATE ENTITITES:
+
+24. In folder Database create new folder -> Entities
+
+25. Inside Entities create another folder named after each of the entities in our DB
+
+ex. games
+
+26. Inside each entitiy folder create entitiyName.model.js
+
+ex.game.model.js
+
+27. In the file include all the columns needed->
+
+```
+import { Schema, model } from "mongoose";
+
+const GameSchema = new Schema(
+    {
+        title: { 
+            type: String, 
+            require: true
+        },
+        description: {
+            type:  String
+        },
+    },
+    {
+        timestamps: true,
+        versionKey: false
+    }
+)
+
+const Game = model('Game', GameSchema)
+
+export default Game;
+```
+
+28. go back to server.js and start creating CRUD routes
+ex. app.post('/games', createGame)
+
+## CREATING CRUD FUNCTIONS INSIDE CONTROLLERS
+
+29. Inside our controller create the function we want
+an example:
+
+```
+export const createGame = (req, res) => {
+    try {
+        //1. Recuperar la info
+        const { title, description } = req.body;
+
+        //2. Verficiar la info obtenita
+
+        if(!title || !description) {
+            throw new Error("Title and description cannot be empty")
+        }
+        
+    } catch (error) {
+
+        if(error.message == 'Title and description cannot be empty') {
+           return res.status(400).json(
+            {
+                success: false,
+                message: "Title and description cannot be empty",
+                error: error.message
+            }
+           )
+        }
+
+        res.status(500).json(
+            {
+                success: false,
+                message: "Error creating game!",
+                error: error.message
+            }
+        )
+        
+    }
+}
+```
