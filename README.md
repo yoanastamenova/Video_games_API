@@ -14,7 +14,23 @@
 
 4. ``` npm i express ```   (install express JS package)
 
-5. create folder SRC - inside this folder CREATE server.js
+5. ``` npm i nodemon ```  (installs nodemon package and we dont need deps!)
+
+6. add scripts into package.json  (to run the server in development)
+
+``` "start": "node ./src/server.js" ```
+``` "dev": "nodemon ./src/server.js" ```
+``` "type":"module", under "main" ```
+
+7. ``` npm i dotenv ``` (installing dot env package to use it for env files)  
+
+8. create .env file
+
+9. inside .env - create PORT const and include it in place of 4000
+
+10. create .env.example > add PORT Inside
+
+11. create folder SRC - inside this folder CREATE server.js
 inside include :
 
 ```
@@ -31,25 +47,18 @@ inside include :
     })
 ```
 
-6. ``` npm i nodemon ```  (installs nodemon package and we dont need deps!)
+12. ``` import 'dotenv/config' ``` in our server.js   
 
-7. add scripts into package.json  (to run the server in development)
+13. implement the healthy route in server.js to test if it is working and if yes - we are good to go
 
-``` "start": "node ./src/server.js" ```
-``` "dev": "nodemon ./src/server.js" ```
-``` "type":"module", under "main" ```
-
-8. ``` npm i dotenv ``` (installing dot env package to use it for env files)
-
-9. ``` import 'dotenv/config' ``` en server.js     
-
-10. create .env file
-
-11. inside .env - create PORT const and include it in place of 4000
-
-12. create .env.example > add PORT Inside
-
-13. implement the healthy route as in server.js
+```
+app.get('/healthy', (req, res) => {
+    res.json({
+        success: true,
+        message: "Server is healthy!"
+    });
+});
+```
 
 14. server is ready to use with ``` npm run dev ```
 
