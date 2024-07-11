@@ -1,7 +1,7 @@
 import express from 'express';
 import 'dotenv/config';
 import { dbConnection } from './database/db.js';
-import { router as gamesRoutes } from './entities/games/games.routes.js';
+import { router as gamesRoutes } from './router.js';
 
 const app = express();
 app.use(express.json())
@@ -15,7 +15,7 @@ app.get('/healthy', (req, res) => {
     });
 });
 
-app.use('/', gamesRoutes)
+app.use('/api', gamesRoutes)         // todas las rutas van a tener api en frente
 
 dbConnection()
     .then(() => {

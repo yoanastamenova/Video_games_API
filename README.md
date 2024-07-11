@@ -190,7 +190,7 @@ export const createGame = (req, res) => {
 
 ### CREATE ROUTES
 
-32. In the entitiy folder - create new file named name.routes.js
+32. In the entitiy folder - create new file named entitiy.routes.js
 
 33. Inside this file we import the Router from Express and the controller of the entitiy we need:
 
@@ -218,4 +218,39 @@ app.use('/', gamesRoutes)
 //if you put something after the / it will go before all the routes in games.routes.js
 ```
 
-35. 
+35.  After this point we need to add each new route we create in our Route file for the Entitiy
+
+```
+router.post('/games', createGame)        // to create a new game
+router.get('/games', getAllGames)        //to see all games
+router.delete('/games/:id', deleteGame)        // to delete a game by its id
+
+```
+
+
+---- OR JUST MAKE A FILE ROUTER -----
+ 
+36. New file in folder SRC - named router.js
+
+37. In this file put:
+
+```
+import { Router } from "express";
+import { router as gamesRoutes} from "./entities/games/games.routes.js";
+
+const router = Router()
+
+router.use('/games', gamesRoutes)
+
+export { router }
+```
+
+38. Remember to import and add it in the server.js file
+
+```
+import { router as gamesRoutes } from './router.js';
+app.use('/api', gamesRoutes)  
+```
+
+39. Continue adding routes in router.js after creating them
+
