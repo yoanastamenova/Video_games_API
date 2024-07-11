@@ -2,7 +2,6 @@ import Game from "./game.model.js";
 
 export const createGame = async (req, res) => {
     try {
-        console.log(1);
         //1. Recuperar la info
         const { title, description } = req.body;
         const body = req.body;
