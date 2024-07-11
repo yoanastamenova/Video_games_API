@@ -1,7 +1,7 @@
 import express from 'express';
 import 'dotenv/config';
 import { dbConnection } from './database/db.js';
-import { createGame } from './entities/games/games.controller.js';
+import { router as gamesRoutes } from './entities/games/games.routes.js';
 
 const app = express();
 app.use(express.json())
@@ -15,6 +15,8 @@ app.get('/healthy', (req, res) => {
     });
 });
 
+app.use('/', gamesRoutes)
+
 dbConnection()
     .then(() => {
         console.log('Database connection established!');
@@ -25,5 +27,3 @@ dbConnection()
     .catch(error => {
         console.error('Error establishing connection with the database:', error);
     });
-
-app.post('/games', createGame);

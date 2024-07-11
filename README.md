@@ -187,3 +187,35 @@ export const createGame = (req, res) => {
 ```
 
 31. Go back to server.js and add it to the route
+
+### CREATE ROUTES
+
+32. In the entitiy folder - create new file named name.routes.js
+
+33. Inside this file we import the Router from Express and the controller of the entitiy we need:
+
+an example:
+```
+import { Router } from "express";
+import { createGame } from "./games.controller.js";
+
+const router = Router()
+
+router.post('/games', createGame)        // to create a new game
+```
+
+34. Inside our server file we need to tell where the routes come from:
+
+example:
+
+```
+import { router as gamesRoutes } from './entities/games/games.routes.js';
+
+and then 
+
+app.use('/', gamesRoutes)      
+
+//if you put something after the / it will go before all the routes in games.routes.js
+```
+
+35. 
