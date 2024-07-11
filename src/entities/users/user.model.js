@@ -13,6 +13,7 @@ export const UserSchema = new Schema(
         email: {
             type: String,
             requred: true,
+            unique: true
         },
         password: {
             type: String,
