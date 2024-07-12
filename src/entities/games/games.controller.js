@@ -58,7 +58,15 @@ export const getAllGames = async (req, res) => {
     try {
         const games = await Game.find()
         .select('-updatedAt')
-        .populate('userFavourites')
+        .populate({
+            path: 'userFavourites',
+            select: "-password"
+        })
+        .populate(
+            {
+                path: 'comments'
+            }
+        )
 
         res.status(200).json(
             {

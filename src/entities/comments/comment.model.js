@@ -8,7 +8,7 @@ const CommentSchema = new Schema(
         },
         user: {
             type:  Schema.Types.ObjectId,        //coje el id del token del usuario para verificar la info
-            path: 'User',                       // es el modelo con que relaciona
+            ref: 'User',                       // es el modelo con que relaciona
             required: true,
         }
     },
