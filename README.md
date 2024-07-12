@@ -269,4 +269,7 @@ app.use('/api', gamesRoutes)
 
 41. Inside new file with name.js
 
-42. Import the function inside and export it
+42. Import the function inside and export it to use it in our routers
+
+
+
