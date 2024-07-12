@@ -57,16 +57,16 @@ export const createGame = async (req, res) => {
 export const getAllGames = async (req, res) => {
     try {
         const games = await Game.find()
-        .select('-updatedAt')
-        .populate({
-            path: 'userFavourites',
-            select: "-password"
-        })
-        .populate(
-            {
-                path: 'comments'
-            }
-        )
+            .select('-updatedAt')
+            .populate({
+                path: 'userFavourites',
+                select: "-password"
+            })
+            .populate(
+                {
+                    path: 'comments'
+                }
+            )
 
         res.status(200).json(
             {
@@ -95,7 +95,7 @@ export const deleteGame = async (req, res) => {
         //2. Verficar que existe este juego con este id
         const gameFinded = await Game.findById(gameID)
 
-        if(!gameFinded) {
+        if (!gameFinded) {
             return res.status(404).json(
                 {
                     success: false,
@@ -132,37 +132,45 @@ export const addFavouriteGame = async (req, res) => {
     try {
         const gameId = req.params.id;
         const userId = req.tokenData.id;
-        console.log(req.params.id)
 
         const game = await Game.findById(gameId)
 
-        if(!game){
+        if (!game) {
             return res.status(404).json({
                 success: false,
                 message: "Game does not exist!"
             })
         }
+        console.log(game.userFavourites.includes(userId))
 
-        game.userFavourites.push(userId)
-        
-        const updateGame = await game.save()
+        if (!game.userFavourites.includes(userId)) {
+            console.log(1)
+            game.userFavourites.push(userId);
+            await game.save();
 
-        res.status(200).json( 
-            {
-                success: true,
-                message: "User added successfully to the Game selected!",
-                data: updateGame
-            }
-        )
+            return res.status(200).json(
+                {
+                    success: true,
+                    message: "Game added to favourites successfully!"
+                }
+            )
+          
+        }
+        console.log(2)
 
+        game.userFavourites.splice(game.userFavourites.indexOf(userId), 1)
+        console.log(game.userFavourites)
+        await game.save()
 
+        res.json({
+            success: true,
+            message: "Game deleted from favourites",
+        });
     } catch (error) {
-        res.status(500).json(
-            {
-                success: false,
-                message: "Error adding user to favourites!",
-                error: error.message
-            }
-        )
+        res.status(500).json({
+            succes: false,
+            message: "error adding user to favourite",
+            error: error.message,
+        });
     }
-}
+};

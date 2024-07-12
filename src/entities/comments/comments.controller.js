@@ -10,22 +10,22 @@ export const createComment = async (req, res) => {
         //TODO validar - que el juego existe, 
 
         const game = await Game.findById(gameId)     // si no existe no hay donde guardarlo el comment
-         
+
         //atacar BD
 
         const newComment = await Comment.create({
             message: message,
             user: userId
         })
-        
+
 
         game.comments.push(newComment._id)
         const addCommentToGame = await game.save()
 
-        game.comments.includes(newComment._id)
-        const removeCommentFromGame = await game.save()
+        game.comments.pull(newComment._id);
+        const removeCommentFromGame = await game.save();
 
-        if(!newComment) {
+        if (!newComment) {
             return res.status(404).json(
                 {
                     success: false,
