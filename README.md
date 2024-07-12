@@ -263,3 +263,10 @@ app.use('/api', gamesRoutes)
 
 39. Continue adding routes in router.js after creating them
 
+## CREATING MIDDLEWARES
+
+40. In the folder Database add new folder name middlewares
+
+41. Inside new file with name.js
+
+42. Import the function inside and export it
