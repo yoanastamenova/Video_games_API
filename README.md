@@ -111,15 +111,14 @@ dbConnection()
 ## CREATE ENTITITES:
 
 23. In folder Database create new folder -> Entities
-ex. entities
 
 24. Inside Entities create another folder named after each of the entities in our DB
 
-ex. games
+ex. Users
 
 25. Inside each entitiy folder create entitiyName.model.js
 
-ex.   game.model.js
+ex.   user.model.js
 
 26. In the file include all the columns needed->
 
@@ -147,7 +146,7 @@ const Game = model('Game', GameSchema)     //we save the model here
 export default Game;                     //exporting it for external use
 ```
 
-28. go back to server.js and start creating CRUD routes
+28. go back to entitiy.routes.js and start creating CRUD routes
 ex. app.post('/games', createGame)
 
 ## CREATING CRUD FUNCTIONS INSIDE CONTROLLERS
@@ -197,7 +196,7 @@ export const createGame = (req, res) => {
 
 31. Go back to server.js and add it to the route
 
-### CREATE ROUTES
+## CREATE ROUTES
 
 32. In the entitiy folder - create new file named entitiy.routes.js
 
