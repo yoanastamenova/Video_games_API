@@ -129,48 +129,57 @@ export const deleteGame = async (req, res) => {
 }
 
 export const addFavouriteGame = async (req, res) => {
-    try {
-        const gameId = req.params.id;
-        const userId = req.tokenData.id;
+	try {
+		const gameId = req.params.id;
+		const userId = req.tokenData.id;
 
-        const game = await Game.findById(gameId)
+		const game = await Game.findById(gameId);
 
-        if (!game) {
-            return res.status(404).json({
-                success: false,
-                message: "Game does not exist!"
-            })
+		console.log(game);
+
+		if (!game) {
+			return res.status(404).json({
+				success: false,
+				message: "Game not found",
+			});
+		}
+
+		// game.userFavourites.includes(userId)
+
+		if (!game.userFavourites.includes(userId)) {
+			game.userFavourites.push(userId);
+			await game.save();
+
+      return res.json({
+        success: true,
+        message: "Game added to favourite",
+      });
+		}
+
+    // game.userFavourites.splice(game.userFavourites.indexOf(userId),1)
+    // await game.save()
+
+    await Game.findByIdAndUpdate(
+      gameId,
+      {
+        $pull: {
+          userFavourites: userId
         }
-        console.log(game.userFavourites.includes(userId))
+      },
+      {
+        new: true
+      }
+    )
 
-        if (!game.userFavourites.includes(userId)) {
-            console.log(1)
-            game.userFavourites.push(userId);
-            await game.save();
-
-            return res.status(200).json(
-                {
-                    success: true,
-                    message: "Game added to favourites successfully!"
-                }
-            )
-          
-        }
-        console.log(2)
-
-        game.userFavourites.splice(game.userFavourites.indexOf(userId), 1)
-        console.log(game.userFavourites)
-        await game.save()
-
-        res.json({
-            success: true,
-            message: "Game deleted from favourites",
-        });
-    } catch (error) {
-        res.status(500).json({
-            succes: false,
-            message: "error adding user to favourite",
-            error: error.message,
-        });
-    }
+		res.json({
+			success: true,
+			message: "Game deleted from favourites",
+		});
+	} catch (error) {
+		res.status(500).json({
+			succes: false,
+			message: "error adding user to favourite",
+			error: error.message,
+		});
+	}
 };
